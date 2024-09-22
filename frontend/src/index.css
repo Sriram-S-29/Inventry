@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  font-family: 'Inter', "Source Sans Pro", Helvetica, Arial, sans-serif;
+}
+
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  width:100vw ;
+  height: 100vh;
+}
