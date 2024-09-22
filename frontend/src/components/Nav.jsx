@@ -28,7 +28,7 @@ const menuData = [
     label: ' ↗️ Outgoing',
     children: [
       { id: '3.1', label: '🏬 Departments', path: '/departments' },
-      { id: '3.2', label: 'New Outgoing +', path: '/settings/security' },
+      { id: '3.2', label: 'New Outgoing +', path: '/outgoing' },
     ],
   },
 ]

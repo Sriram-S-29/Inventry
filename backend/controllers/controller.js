@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 import { Admin } from "../models/admin.js";
 import { Vendor } from "../models/vendor.js";
 import { Product } from "../models/Product.js";
-import { Department } from "../models/departments.js";
+import { Departments } from "../models/departments.js";
 
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET_KEY, {
@@ -275,7 +275,7 @@ export const purchaseOrder = async (req, res) => {
     const { products, supplier, date, total } = req.body;
     let type = "incoming";
 
-    // Find the vendor details
+
     const vendorDetails = await Vendor.findOne({ name: supplier });
     if (!vendorDetails) {
       return res.status(404).json({ message: `Vendor ${supplier} not found` });
@@ -287,13 +287,13 @@ export const purchaseOrder = async (req, res) => {
     for (const transaction of products) {
       const { productId, newQuantity, cost, gst } = transaction;
 
-      // Find the product by ID
+
       const product = await Product.findById(productId);
       if (!product) {
         return res.status(404).json({ message: `Product with ID ${productId} not found` });
       }
 
-      // Add the transaction to the product's transaction history
+
       const newTransaction = {
         date: date || new Date(),
         type,
@@ -308,7 +308,6 @@ export const purchaseOrder = async (req, res) => {
       product.transactions.push(newTransaction);
       product.quantityInStock = Number(product.quantityInStock) + Number(newQuantity);
 
-      // Add to the purchase items array for the vendor's purchase history
       purchaseItems.push({
         name: product.name,
         newQuantity,
@@ -334,5 +333,26 @@ export const purchaseOrder = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "An error occurred during the purchase order processing." });
+  }
+};
+
+
+export const newDepartment = async (req, res) => {
+  try {
+      const { newDept } = req.body
+      console.log(newDept)
+
+      const existingDept = await Departments.findOne({ name: newDept.dName });
+      console.log(Departments)
+      if (existingDept) {
+          return res.status(409).json({ message: "Department already exists." });
+      }
+
+      const result = await Departments.create(newDept);
+      res.status(201).json(result);
+
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: "An error occurred during the department creation." });
   }
 };

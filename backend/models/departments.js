@@ -8,13 +8,12 @@ const purchaseRecordSchema =  mongoose.Schema({
     description: { type: String },
 });
 
-const departmentSchema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true },
-    head: { type: String, required: true },
+const departmentSchema =  mongoose.Schema({
+    dName: { type: String, required: true,unique:true},
     contact: { type: String, required: true },
     purchaseRecords: [purchaseRecordSchema],
     createdAt: { type: Date, default: Date.now },
 });
 
 
-export const Department = mongoose.model('Department', departmentSchema);
+export const Departments = mongoose.model("Departments", departmentSchema);
