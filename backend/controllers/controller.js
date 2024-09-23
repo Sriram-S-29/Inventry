@@ -167,7 +167,7 @@ export const itemDisplay = async (req, res) => {
       {
         $project: {
           name: 1,
-          _id: 0,
+          _id: 1,
           description: 1,
           units: 1,
           quantityInStock: 1,
@@ -391,9 +391,12 @@ export const newOutgoing = async (req, res) => {
 
       console.log(trans);
       productDetail.transactions.push(trans);
+      console.log(transaction.quantity)
 
-      productDetail.quantity =
-        Number(productDetail.quantity) - Number(transaction.quantity);
+      productDetail.quantityInStock =
+        Number(productDetail.quantityInStock) - Number(transaction.quantity);
+        console.log("new quantity")
+       
 
       await productDetail.save();
 
@@ -414,3 +417,17 @@ export const newOutgoing = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
+
+
+export const itemDetail = async(req,res)=>{
+  try{
+    const id = req.query.id;
+    console.log(req.query)
+    const response = await Product.findById(id)
+    console.log(response)
+
+  }
+  catch(error){
+    console.log(error.message);
+  }
+}

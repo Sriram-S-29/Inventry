@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NewItem from "../components/NewItem";
 import axios from "axios";
+import ItemDetails from "../components/ItemDetails";
 
 function Items() {
   const [newItem, setNewItem] = useState(false);
   const [itemList, setItemList] = useState([]);
   const [list, setList] = useState([]);
   const [query, setQuery] = useState("");
+  const [itemId,setItemId] = useState('')
+
+
+  const handleId=(id)=>{
+
+    setItemId(id)
+
+  }
   const handleClick = () => {
     setNewItem((prev) => {
       return !prev;
@@ -20,18 +29,19 @@ function Items() {
     } catch (error) {
       console.log(error.message);
     }
-  }
-    const ItemList = async () => {
-      try {
-        const itemName = await axios.get(
-          "http://localhost:8000/admin/itemList",{ params: { query: `${query}` }}
-        );
+  };
+  const ItemList = async () => {
+    try {
+      const itemName = await axios.get("http://localhost:8000/admin/itemList", {
+        params: { query: `${query}` },
+      });
+      console.log(itemName.data);
 
-        setItemList(itemName.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
+      setItemList(itemName.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   const handleQuery = (e) => {
     setQuery(e.target.value);
@@ -41,6 +51,8 @@ function Items() {
     List();
     ItemList();
   }, [query]);
+
+
   return (
     <div className="w-screen h-screen">
       {newItem && <NewItem />}
@@ -93,50 +105,30 @@ function Items() {
           </button>
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <table class="min-w-full mt-9 table-auto text-[11px]">
-          <thead>
-            <tr class="bg-gray-200 text-gray-500">
-              <th class="px-6 py-3 text-center font-semibold uppercase">
-                PRODUCT NAME
-              </th>
-              <th class="px-6 py-3 text-center font-semibold uppercase">
-                UNIT
-              </th>
-              <th class="px-6 py-3 text-center font-semibold uppercase">
-                DESCRIPTION
-              </th>
-              <th class="px-6 py-3 text-center font-semibold uppercase">
-                QUANTITY IN HAND
-              </th>
-              <th class="px-6 py-3 text-center font-semibold uppercase">
-                PRICE
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {itemList &&
-              itemList.map((data) => {
-                return (
-                  <tr class="bg-gray-50 hover:bg-gray-100">
-                    <td class="px-6 py-4 text-center text-blue-500 font-bold ">
-                      {data.name}
-                    </td>
-                    <td class="px-6 py-4 text-center">{data.units}</td>
-                    <td class="px-6 py-4 text-center">{data.description}</td>
-                    <td class="px-6 py-4 text-center">
-                      {data.quantityInStock}
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                      {data.cost}
-                    </td>
-                    
-                    
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+      <div className="flex h-screen text-sm bg-gray-100">
+        <div className="w-1/4 bg-white p-6 overflow-y-auto">
+          <div className="flex  items-center mb-4">
+            <h2 className="text-sm font-semibold">Active Items</h2>
+          </div>
+          {itemList.map((item, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center py-2 border-b hover:bg-gray-100"
+              onClick={()=>{handleId(item._id)}}
+            >
+              <label className="flex  font-medium text-gray-700 items-center text-xs">
+                {item.name}
+              </label>
+              <span className="text-gray-500">
+                {item.quantityInStock} {item.units}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div>
+          <ItemDetails itemId={itemId} />
+          
+        </div>
       </div>
     </div>
   );

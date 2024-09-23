@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Outgoing() {
   const [dList, setDList] = useState([]);
@@ -10,7 +12,9 @@ function Outgoing() {
     purpose: "",
   });
   const [product, setProduct] = useState([{ product: "", quantity: "" }]);
-
+  useEffect(() => {
+    getList();
+  }, [product]);
   const getList = async () => {
     try {
       const response = await axios.get(
@@ -82,7 +86,8 @@ function Outgoing() {
         finalData
       );
       console.log("Success:", response.data);
-      alert("Data successfully submitted!");
+      setProduct([{ product: "", quantity: "" }]);
+      toast.success("Sucess");
     } catch (error) {
       console.error("Error posting data:", error.message);
       alert("Failed to submit data.");
@@ -101,9 +106,7 @@ function Outgoing() {
         </h2>
 
         <div className="mb-4  gap-4 items-center">
-          <label className="block text-red-500  mb-2">
-            Department*
-          </label>
+          <label className="block text-red-500  mb-2">Department*</label>
           <select
             id="dName"
             value={data.dName}
@@ -141,7 +144,6 @@ function Outgoing() {
         </div>
 
         <table className="table-auto w-full text-left mb-4 text-xs rounded-t-xl ">
-          
           <thead>
             <tr>
               <th className="text-[1rem] ">Item Table</th>
@@ -214,7 +216,9 @@ function Outgoing() {
             onClick={addrow}
             className=" flex items-center gap-1 px-4 py-2 bg-gray-100  rounded "
           >
-            <p className="text-white bg-blue-600 rounded-full w-4 h-4 flex items-center justify-center">+</p>
+            <p className="text-white bg-blue-600 rounded-full w-4 h-4 flex items-center justify-center">
+              +
+            </p>
             <p className="text-gray-600">Add New Row</p>
           </button>
         </div>
@@ -228,6 +232,16 @@ function Outgoing() {
           </button>
         </div>
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        pauseOnFocusLoss
+      />
     </div>
   );
 }
