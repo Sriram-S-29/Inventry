@@ -55,7 +55,7 @@ function NewItem() {
   }, []);
 
   return (
-    <div className="absolute inset-0 m-auto flex items-center justify-center min-h-screen bg-gray-100 bg-opacity-85">
+    <div className="absolute inset-0 m-auto flex items-center justify-center min-h-screen bg-gray-100 bg-opacity-85 animate-fadeInDown">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Add New Product</h2>
         <form onSubmit={handleSubmit}>

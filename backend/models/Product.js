@@ -9,6 +9,7 @@ const transactionSchema = mongoose.Schema({
   cost: { type: String },
   gst: { type: String },
   total: { type: String },
+  purpose:{type:String},
   transactionId: { type: String, required: true },
 });
 

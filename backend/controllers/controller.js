@@ -298,7 +298,7 @@ export const purchaseOrder = async (req, res) => {
         cost,
       });
 
-      totalAmount += Number(cost) * Number(newQuantity); //
+      totalAmount += Number(cost) * Number(newQuantity); 
       await product.save();
     }
 
@@ -387,6 +387,7 @@ export const newOutgoing = async (req, res) => {
         newQuantity: transaction.quantity,
         customer: dName,
         transactionId: departmentDetail._id,
+        purpose:purpose
       };
 
       console.log(trans);
@@ -486,3 +487,41 @@ export const ItemTransction = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
+export const getdata = async(req,res)=>{
+  try{
+    const id = req.query.id
+
+    const response = await Product.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(id)
+        }
+      },
+      {
+        $unwind: {
+          path: '$transactions'
+        }
+      },
+      {
+        $replaceRoot: {
+        newRoot: {
+          $mergeObjects: [
+            "$transactions",
+            { unit: "$units",
+            name:'$name'}
+          ]
+        }
+        }
+    }
+    ])
+    console.table(response)
+    res.status(200).json(response);
+  }
+  catch(error){
+
+    console.log(error.message)
+    
+  }
+}

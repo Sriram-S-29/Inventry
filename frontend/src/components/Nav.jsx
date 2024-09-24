@@ -13,22 +13,22 @@ const menuData = [
     children: [
       { id: '2.1', label: 'Vendor', path: '/vendors' },
       { id: '2.2', label: 'New Purchase', path: '/newPurchase' },
-      {
-        id: '2.3',
-        label: 'Items',
+    ],
+  },
+  {
+    id:'3',
+    label: 'Items',
         children: [
           { id: '2.3.1', label: ' Items', path: '/items' },
           { id: '2.3.2', label: 'Modify Item', path: '/users/groups/moderators' },
         ],
-      },
-    ],
   },
   {
-    id: '3',
+    id: '4',
     label: ' ↗️ Outgoing',
     children: [
-      { id: '3.1', label: '🏬 Departments', path: '/departments' },
-      { id: '3.2', label: 'New Outgoing➕', path: '/outgoing' },
+      { id: '4.1', label: '🏬 Departments', path: '/departments' },
+      { id: '4.2', label: 'New Outgoing➕', path: '/outgoing' },
     ],
   },
 ]
