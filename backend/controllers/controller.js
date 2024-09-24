@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
+const ObjectId = mongoose.Types.ObjectId;
 
 dotenv.config();
 
@@ -311,11 +313,9 @@ export const purchaseOrder = async (req, res) => {
     res.json("Purchase Order Processed Successfully");
   } catch (error) {
     console.log(error.message);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred during the purchase order processing.",
-      });
+    res.status(500).json({
+      message: "An error occurred during the purchase order processing.",
+    });
   }
 };
 
@@ -391,12 +391,11 @@ export const newOutgoing = async (req, res) => {
 
       console.log(trans);
       productDetail.transactions.push(trans);
-      console.log(transaction.quantity)
+      console.log(transaction.quantity);
 
       productDetail.quantityInStock =
         Number(productDetail.quantityInStock) - Number(transaction.quantity);
-        console.log("new quantity")
-       
+      console.log("new quantity");
 
       await productDetail.save();
 
@@ -418,16 +417,72 @@ export const newOutgoing = async (req, res) => {
   }
 };
 
-
-export const itemDetail = async(req,res)=>{
-  try{
+export const itemDetail = async (req, res) => {
+  try {
     const id = req.query.id;
-    console.log(req.query)
-    const response = await Product.findById(id)
-    console.log(response)
-
-  }
-  catch(error){
+    console.log(req.query);
+    const response = await Product.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(id),
+        },
+      },
+      {
+        $project: {
+          transactions: 0,
+        },
+      },
+    ]);
+    console.log(response);
+    res.status(200).json(response[0]);
+  } catch (error) {
+    res.status(500).json(error.message);
     console.log(error.message);
   }
+};
+
+$match: {
+  $or: [{ type: "" }, { type: { $exists: "" } }];
 }
+
+// {
+//   $match: {
+//     $or: [{ type: "outgoing" }, { type: { $exists: false } }],
+//   },
+// },
+
+export const ItemTransction = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const response = await Product.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(id),
+        },
+      },
+      {
+        $unwind: {
+          path: "$transactions",
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$transactions",
+        },
+      },
+      {
+        $match: {
+          $or: [{ type: "" }, { type: { $exists: "" } }],
+        },
+      },
+      {
+        $sort: {
+          date: -1
+        }
+      }
+    ]);
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};

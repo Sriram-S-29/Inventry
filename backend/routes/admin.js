@@ -4,7 +4,7 @@ const admin = Router();
 import cors from 'cors';
 import { Token} from '../Authenticate/login.js';
 
-import { list, login, newItem, newVendor, register, vendorList,itemName,itemDisplay,vendorLists,productLists,purchaseOrder,newDepartment,getDepartmentsList,newOutgoing,itemDetail } from '../controllers/controller.js';
+import { list, login, newItem, newVendor, register, vendorList,itemName,itemDisplay,vendorLists,productLists,purchaseOrder,newDepartment,getDepartmentsList,newOutgoing,itemDetail,ItemTransction } from '../controllers/controller.js';
 admin.use(cors());
 const corsOptions = {
   origin: "http://localhost:5173", 
@@ -27,6 +27,7 @@ admin.post('/newDepartment',newDepartment)
 admin.get('/departmentList',getDepartmentsList)
 admin.post('/outgoing',newOutgoing)
 admin.get('/itemDetail',itemDetail)
+admin.get('/transaction',ItemTransction)
 
 
 

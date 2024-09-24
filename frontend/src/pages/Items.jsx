@@ -54,7 +54,7 @@ function Items() {
 
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen">
       {newItem && <NewItem />}
       {newItem && (
         <button
@@ -105,7 +105,7 @@ function Items() {
           </button>
         </div>
       </div>
-      <div className="flex h-screen text-sm bg-gray-100">
+      <div className="flex text-sm">
         <div className="w-1/4 bg-white p-6 overflow-y-auto">
           <div className="flex  items-center mb-4">
             <h2 className="text-sm font-semibold">Active Items</h2>
@@ -113,7 +113,7 @@ function Items() {
           {itemList.map((item, index) => (
             <div
               key={index}
-              className="flex justify-between items-center py-2 border-b hover:bg-gray-100"
+              className="flex justify-between items-center py-2 border-b hover:bg-gray-100 cursor-default hover:cursor-pointer"
               onClick={()=>{handleId(item._id)}}
             >
               <label className="flex  font-medium text-gray-700 items-center text-xs">
@@ -125,7 +125,7 @@ function Items() {
             </div>
           ))}
         </div>
-        <div>
+        <div className=" w-full">
           <ItemDetails itemId={itemId} />
           
         </div>
