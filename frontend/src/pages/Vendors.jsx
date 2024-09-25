@@ -22,7 +22,7 @@ function Vendors() {
     }
     useEffect(()=>{
         VendorData()
-    },[])
+    },[newVendor])
    
   return (
     <div className='flex flex-col w-[100%] relative'>

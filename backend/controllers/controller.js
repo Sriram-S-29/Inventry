@@ -360,7 +360,32 @@ export const getDepartmentsList = async (req, res) => {
         },
       },
     ]);
-    res.status(200).json({ departmentList, datas });
+    const purpose = await Product.aggregate([
+      {
+        $unwind: {
+          path: "$transactions",
+        }
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$transactions"
+        }
+      },
+      {
+        $match: {
+          type:'outgoing'
+        }
+        
+      },
+      {
+        $project: {
+          purpose:1,
+          _id:0
+        }
+      }
+    ])
+    
+    res.status(200).json({ departmentList, datas,purpose });
   } catch (error) {
     console.error(error.message);
     res.status(500).json(error.message);

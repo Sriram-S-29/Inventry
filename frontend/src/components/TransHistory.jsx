@@ -23,7 +23,7 @@ export default function TransHistory({itemId}) {
         const response = await axios.get('http://localhost:8000/admin/getdata', {
             params: { id: itemId },
           })
-          console.table(response.data)
+          console.table(response)
           setTransactions(response.data)
 
     }

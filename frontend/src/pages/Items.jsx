@@ -49,7 +49,7 @@ function Items() {
   useEffect(() => {
     List();
     ItemList();
-  }, [query]);
+  }, [query,newItem]);
 
   return (
     <div className="w-screen max-w-screen mx-auto">

@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 function Outgoing() {
   const [dList, setDList] = useState([]);
   const [pList, setPList] = useState([]);
+  const  [purpose,setPurpose] = useState([])
   const [data, setData] = useState({
     dName: "",
     date: "",
@@ -22,6 +23,7 @@ function Outgoing() {
       );
       setDList(response.data.departmentList);
       setPList(response.data.datas);
+      setPurpose(response.data.purpose)
       console.table(pList);
     } catch (error) {
       console.log(error.message);
@@ -140,7 +142,15 @@ function Outgoing() {
             onChange={(e) => handleOnChange("purpose", e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
             placeholder="Enter Purpose"
+            list="purpose_list"
           />
+          <datalist id="purpose_list">
+            
+          {purpose.map((item,index)=>
+          (
+            <option key={index} value={item.purpose}>{item.purpose}</option>
+          ))}
+          </datalist>
         </div>
 
         <table className="table-auto w-full text-left mb-4 text-xs rounded-t-xl ">

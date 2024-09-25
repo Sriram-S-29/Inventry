@@ -13,8 +13,6 @@ function Purchase() {
   ]);
   const [total, setTotal] = useState(0);
 
-  const style =
-    "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500";
   const style1 =
     "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500";
 
@@ -43,6 +41,13 @@ function Purchase() {
     ]);
   };
 
+  const removeRow = (index) => {
+    const updatedData = [...data];
+    updatedData.splice(index, 1);
+    setData(updatedData);
+    calculateTotal(updatedData); // Update total after removal
+  };
+
   const handleChange = (key, value) => {
     const newData = [...data];
     const exists = newData.some((item) => item.name === value);
@@ -56,9 +61,9 @@ function Purchase() {
       };
       setData(newData);
     } else {
+      alert("Item already exists.");
       newData[key].name = "";
       setData(newData);
-      alert("Item already exists.");
     }
   };
 
@@ -78,10 +83,17 @@ function Purchase() {
     }
 
     setData(newData);
+    calculateTotal(newData); // Update total whenever a field is changed
+  };
+
+  const calculateTotal = (newData) => {
+    let sum = newData.reduce((acc, ini) => acc + Number(ini.total), 0);
+    setTotal(sum.toFixed(2)); // Update total with formatted value
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const finalData = {
       supplier,
       date,
@@ -103,24 +115,24 @@ function Purchase() {
         finalData
       );
       console.log("Order submitted", response.data);
-      toast.success("Sucess");
+      toast.success("Order submitted successfully!");
+
+      // Reset all fields after successful submission
       setData([{ _id: "", quantityInStock: "0", description: "", cost: "" }]);
+      setProductList([]);
+      setDate("");
+      setVendorName("");
+      setTotal(0);
     } catch (error) {
       console.error("Error submitting order", error.message);
+      toast.error("Failed to submit order.");
     }
-  };
-
-  const add = () => {
-    let sum = data.reduce((acc, ini) => acc + Number(ini.total), 0);
-    setTotal(sum);
-    console.table(data);
   };
 
   useEffect(() => {
     venList();
     proList();
-    add();
-  }, [data]);
+  }, []);
 
   return (
     <div className="w-screen h-screen flex justify-center bg-white p-4">
@@ -150,7 +162,7 @@ function Purchase() {
           <div>
             <label className="block mb-2 text-red-500">Select Vendor*</label>
             <select
-              className="w-[30%] text-center text-gray-600 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
+              className="w-[30%] text-center text-gray-600 py-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
               onChange={(e) => setVendorName(e.target.value)}
               value={supplier}
               required
@@ -169,7 +181,7 @@ function Purchase() {
             <label className="block mb-2 text-red-500">Date*</label>
             <input
               type="date"
-              className="w-[30%] text-center text-gray-600 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
+              className="w-[30%] text-center text-gray-600 py-[1px] border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
@@ -188,6 +200,7 @@ function Purchase() {
                     <th className="px-4 py-2">Cost</th>
                     <th className="px-4 py-2">GST</th>
                     <th className="px-4 py-2">Amount</th>
+                    <th className="px-4 py-2">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -245,52 +258,50 @@ function Purchase() {
                         />
                       </td>
                       <td className="p-2 border">
-                        <p>{item.total}</p>
+                        <input
+                          type="text"
+                          className={style1}
+                          value={item.total}
+                          disabled
+                        />
+                      </td>
+                      <td className="p-2 border text-center">
+                        <button
+                          type="button"
+                          onClick={() => removeRow(key)}
+                          className="text-red-600 font-semibold hover:underline"
+                        >
+                          Remove
+                        </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-
-            {/* Add Row Button */}
-            <div className="flex justify-start relative">
               <button
                 type="button"
                 onClick={addRow}
-                className=" flex items-center gap-1 px-4 py-2 bg-gray-100  rounded "
+                className="bg-gray-200 hover:bg-gray-300 text-gray-600 px-4 py-2 rounded-lg"
               >
-                <p className="text-white bg-blue-600 rounded-full w-4 h-4 flex items-center justify-center">
-                  +
-                </p>
-                <p className="text-gray-600">Add New Row</p>
+                + Add Row
               </button>
             </div>
           </div>
-          <div className="absolute top-[83%] left-[87%]">
-            <p className="text-red-600 ">Total Amount : {total}</p>
-          </div>
 
-          <div className="flex justify-end ">
+          <div className="flex justify-between items-center mt-4">
+            <p className="text-xl font-semibold">
+              Total: <span className="text-green-500">Rs :- {total}</span>
+            </p>
             <button
               type="submit"
-              className=" w-[17%] bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-150 text-center self-end"
+              className="px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-600"
             >
-              Submit Purchase Order
+              Submit
             </button>
           </div>
         </form>
       </div>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        pauseOnFocusLoss
-      />
+      <ToastContainer />
     </div>
   );
 }

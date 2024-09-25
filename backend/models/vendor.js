@@ -35,11 +35,13 @@ const vendorSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
+        uppercase: true,
         trim: true,
     },
     companyName: {
         type: String,
         required: true,
+        uppercase: true,
         trim: true,
     },
     phno: {
