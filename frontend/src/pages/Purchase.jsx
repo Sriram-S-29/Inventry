@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Purchase() {
   const [vendorList, setVendorList] = useState([]);
@@ -11,14 +11,13 @@ function Purchase() {
   const [data, setData] = useState([
     { _id: "", quantityInStock: "0", description: "", cost: "" },
   ]);
-  const[total,setTotal]=useState(0)
+  const [total, setTotal] = useState(0);
 
   const style =
-    "block w-[50%] appearance-none bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition ease-in-out duration-150 mb-4";
-    const style1 =
-    "block w-[100%] appearance-none bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition ease-in-out duration-150 mb-4";
+    "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500";
+  const style1 =
+    "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500";
 
-  // Fetch vendors list
   const venList = async () => {
     try {
       const response = await axios("http://localhost:8000/admin/vendorList");
@@ -28,7 +27,6 @@ function Purchase() {
     }
   };
 
-  // Fetch products list
   const proList = async () => {
     try {
       const response = await axios("http://localhost:8000/admin/productLists");
@@ -38,7 +36,6 @@ function Purchase() {
     }
   };
 
-  // Handle adding a new row for products
   const addRow = () => {
     setData([
       ...data,
@@ -46,7 +43,6 @@ function Purchase() {
     ]);
   };
 
-  // Handle product selection and avoid duplication
   const handleChange = (key, value) => {
     const newData = [...data];
     const exists = newData.some((item) => item.name === value);
@@ -99,7 +95,7 @@ function Purchase() {
         total: item.total,
       })),
     };
-    console.log(finalData)
+    console.log(finalData);
 
     try {
       const response = await axios.post(
@@ -108,24 +104,22 @@ function Purchase() {
       );
       console.log("Order submitted", response.data);
       toast.success("Sucess");
-      setData([
-        { _id: "", quantityInStock: "0", description: "", cost: "" },
-      ])
+      setData([{ _id: "", quantityInStock: "0", description: "", cost: "" }]);
     } catch (error) {
       console.error("Error submitting order", error.message);
     }
   };
 
-  const add = ()=>{
-    let  sum = data.reduce((acc,ini)=>acc+Number(ini.total),0) 
-    setTotal(sum)
-    console.table(data)
-  }
+  const add = () => {
+    let sum = data.reduce((acc, ini) => acc + Number(ini.total), 0);
+    setTotal(sum);
+    console.table(data);
+  };
 
   useEffect(() => {
     venList();
     proList();
-    add() 
+    add();
   }, [data]);
 
   return (
@@ -149,14 +143,17 @@ function Purchase() {
           New Purchase Order
         </h1>
 
-        <form className="w-full" onSubmit={handleSubmit}>
-          {/* Vendor Selection */}
+        <form
+          className="w-full relative flex flex-col gap-3 flex-1"
+          onSubmit={handleSubmit}
+        >
           <div>
-            <label className="block mb-2">Select Vendor</label>
+            <label className="block mb-2 text-red-500">Select Vendor*</label>
             <select
-              className={style}
+              className="w-[30%] text-center text-gray-600 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
               onChange={(e) => setVendorName(e.target.value)}
               value={supplier}
+              required
             >
               <option value="">-- Choose Vendor --</option>
               {vendorList.map((item, key) => (
@@ -169,12 +166,13 @@ function Purchase() {
 
           {/* Date Selection */}
           <div>
-            <label className="block mb-2">Date</label>
+            <label className="block mb-2 text-red-500">Date*</label>
             <input
               type="date"
-              className={style}
+              className="w-[30%] text-center text-gray-600 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
               value={date}
               onChange={(e) => setDate(e.target.value)}
+              required
             />
           </div>
 
@@ -182,14 +180,14 @@ function Purchase() {
           <div className="w-full">
             <p className="font-semibold mb-2">Add Items</p>
             <div className="h-[80%] border border-gray-200 rounded-lg p-2">
-              <table className="min-w-full bg-white border border-gray-300 shadow-md mb-4">
+              <table className="table-auto w-full text-left mb-4 text-xs rounded-t-xl">
                 <thead>
                   <tr>
-                    <th className="py-2 px-4 border">Items</th>
-                    <th className="py-2 px-4 border">New Quantity</th>
-                    <th className="py-2 px-4 border">Cost</th>
-                    <th className="py-2 px-4 border">GST</th>
-                    <th className="py-2 px-4 border">Amount</th>
+                    <th className="px-4 py-2">Items</th>
+                    <th className="px-4 py-2">New Quantity</th>
+                    <th className="px-4 py-2">Cost</th>
+                    <th className="px-4 py-2">GST</th>
+                    <th className="px-4 py-2">Amount</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -197,7 +195,7 @@ function Purchase() {
                     <tr key={key} className="hover:bg-gray-100">
                       <td className="p-2 border">
                         <select
-                          className="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition ease-in-out duration-150 mb-4"
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
                           value={item.name}
                           onChange={(e) => handleChange(key, e.target.value)}
                         >
@@ -220,8 +218,9 @@ function Purchase() {
                           }
                         />
                         <p className="text-green-500">
-  Stock In Hand &nbsp; {item.quantityInStock} {item.units}
-</p>
+                          Stock In Hand &nbsp; {item.quantityInStock}{" "}
+                          {item.units}
+                        </p>
                       </td>
                       <td className="p-2 border">
                         <input
@@ -255,24 +254,31 @@ function Purchase() {
             </div>
 
             {/* Add Row Button */}
+            <div className="flex justify-start relative">
+              <button
+                type="button"
+                onClick={addRow}
+                className=" flex items-center gap-1 px-4 py-2 bg-gray-100  rounded "
+              >
+                <p className="text-white bg-blue-600 rounded-full w-4 h-4 flex items-center justify-center">
+                  +
+                </p>
+                <p className="text-gray-600">Add New Row</p>
+              </button>
+            </div>
+          </div>
+          <div className="absolute top-[83%] left-[87%]">
+            <p className="text-red-600 ">Total Amount : {total}</p>
+          </div>
+
+          <div className="flex justify-end ">
             <button
-              type="button"
-              onClick={addRow}
-              className="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-150"
+              type="submit"
+              className=" w-[17%] bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-150 text-center self-end"
             >
-              Add Row
+              Submit Purchase Order
             </button>
           </div>
-          <div>  <p>{total}</p></div>
-        
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-150"
-          >
-            Submit Purchase Order
-          </button>
         </form>
       </div>
       <ToastContainer

@@ -106,7 +106,7 @@ function Items() {
 
       <div className="flex text-sm mt-4">
         
-        <div className="w-1/5 bg-white p-6 overflow-y-auto min-w-[23%]">
+        <div className="w-[30%] bg-white p-6 overflow-y-auto min-w-[23%]">
           <div className="flex items-center mb-4">
             <h2 className="text-sm font-semibold">Active Items</h2>
           </div>
