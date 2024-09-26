@@ -550,3 +550,50 @@ export const getdata = async(req,res)=>{
     
   }
 }
+
+export const departmentList = async(req,res)=>{
+  try{
+    const {query} = req.query
+    console.log(query)
+
+    const response = await Departments.aggregate([
+      {
+        $match: {
+          $or:[
+            {
+              dName:{
+                $exists:true
+              }
+            },
+            {
+              $expr:{
+                $eq:["$dName",'']
+              }
+            }
+          ]
+        }
+        
+      },
+      {
+        $match: {
+          dName:{
+            $regex:`${query}`,
+            $options:'i'
+          }
+        }
+      },
+      {
+        $project: {
+          dName:1,
+          contact:1
+        }
+      }
+    ])
+    console.table(response)
+    res.status(200).json(response)
+
+  }
+  catch(error){
+    console.log(error.message)
+  }
+}

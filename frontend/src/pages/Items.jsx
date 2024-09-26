@@ -92,7 +92,7 @@ function Items() {
         />
         <datalist id="item-list">
           {list.map((item, index) => (
-            <option key={index} value={item.name} />
+            <option key={index}  value={item.name} />
           ))}
         </datalist>
 
