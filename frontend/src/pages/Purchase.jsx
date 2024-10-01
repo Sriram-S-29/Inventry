@@ -163,7 +163,7 @@ function Purchase() {
         {open&&<NewItem/>}
         <div className="absolute top-2 bg-green-50 w-56 h-16  flex items-center justify-center gap-2 z-10 rounded-xl border-2 border-white ">
           <div className="bg-green-500 text-white p-2 rounded-lg w-10 text-center h-8 flex  items-center"><p>Ok</p></div>
-          <div className="text-gray-500">Added Success</div>
+          <div className="text-gray-500">Added Success </div>
 
         </div>
         
