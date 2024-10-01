@@ -22,6 +22,7 @@ export default function Login({ setIsAuthenticated }) {
 
     try {
       if (isLogin) {
+        console.log(data)
         const response = await axios.post("http://localhost:8000/admin/login",{data});
         console.table(response.data);
 

@@ -122,8 +122,8 @@ function DepartmentHistory({ id }) {
   };
 
   return (
-    <div className="p-2 bg-gray-100 min-h-screen  text-sm">
-      <div className="max-w-6xl mx-auto bg-white p-3 rounded-lg shadow-md">
+    <div className="p-2 bg-gray-100 w-[100%] min-h-screen  text-[12px] ">
+      <div className="max-w-6xl mx-auto  p-3 rounded-lg shadow-md">
        
         <div className="flex flex-col md:flex-row justify-between items-center mb-6">
           <h2 className="text-lg font-semibold">Department History</h2>
@@ -261,8 +261,8 @@ function DepartmentHistory({ id }) {
         
         {!loading && (
           <div className="overflow-x-auto  ">
-            <table className="min-w-full bg-white rounded-lg shadow-md">
-              <thead className="bg-gray-50">
+            <table className="min-w-full rounded-lg shadow-md">
+              <thead className="bg-gray-50 ">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Date

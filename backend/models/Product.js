@@ -26,8 +26,8 @@ const productSchema = mongoose.Schema({
   description: { type: String,uppercase: true },
   category: { type: String,uppercase: true },
   units: { type: String,uppercase: true },
-  minimum: { type: String, default: 0 },
-  cost: { type: String, default: 0 },
+  minimum: { type: Number, default: 0 },
+  cost: { type: Number, default: 0 },
   transactions: [transactionSchema],
 });
 

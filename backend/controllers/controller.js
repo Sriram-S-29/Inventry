@@ -342,6 +342,7 @@ export const newDepartment = async (req, res) => {
 
 export const getDepartmentsList = async (req, res) => {
   try {
+    console.log(req.body)
     const departmentList = await Departments.aggregate([
       {
         $project: {

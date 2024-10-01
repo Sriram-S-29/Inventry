@@ -40,9 +40,9 @@ function Departments() {
   }, [query]);
 
   return (
-    <div className="w-screen max-w-screen mx-auto relative">
-      <div className="bg-white shadow-md py-4 px-10 flex items-center gap-4">
-        <div className="relative w-full max-w-md">
+    <div className="w-screen  text-[12px]">
+      <div className="bg-white shadow-md py-4 px-10 flex items-center gap-4 ">
+        <div className="relative w-full max-w-md ">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3">
             <svg
               className="w-5 h-6  text-gray-500"
@@ -68,7 +68,7 @@ function Departments() {
           />
         </div>
         <button
-          className="bg-blue-600 px-2 py-2 text-white rounded-md hover:bg-blue-700 transition text-sm"
+          className="bg-blue-600 px-2 py-2 text-white rounded-md hover:bg-blue-700 transition "
           onClick={() => setVisible(true)}
         >
           Add Department
@@ -76,15 +76,15 @@ function Departments() {
         {visible && <NewDepartment setVisible={setVisible} />}
       </div>
 
-      <div className="flex  mt-6">
+      <div className="flex justify-center items-start   mt-6 text-[12px] ">
         <div className="w-[29%]  bg-white shadow-md rounded-lg p-1">
-          <p className="text-lg mb-4">Active Departments</p>
+          <p className="text-lg ml-2 mb-4">Active Departments</p>
           {loading ? (
             <p>Loading departments...</p>
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : (
-            <table className="w-full table-auto text-sm">
+            <table className="w-full table-auto text-[12px]">
               <thead className="bg-gray-100">
                 <tr>
                   <th className="px-4 py-2 text-left">Department Name</th>
@@ -115,7 +115,7 @@ function Departments() {
           )}
         </div>
 
-        <div className="w-auto bg-white shadow-md rounded-lg p-">
+        <div className=" bg-white shadow-md rounded-lg p-">
           <DepartmentHistory id={id} />
         </div>
       </div>

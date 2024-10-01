@@ -14,3 +14,11 @@ body {
   width:100vw ;
   height: 100vh;
 }
+
+.background{
+  background-image: url(../public/back.svg);
+  background-position: 80%;
+  background-size: 18%;
+
+ 
+}
