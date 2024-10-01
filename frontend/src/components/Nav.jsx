@@ -13,6 +13,7 @@ const menuData = [
     children: [
       { id: '2.1', label: 'Vendor', path: '/vendors' },
       { id: '2.2', label: 'New Purchase', path: '/newPurchase' },
+      { id: '2.3', label: 'Purchase History', path: '/purchaseHistory' }
     ],
   },
   {

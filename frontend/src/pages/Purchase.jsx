@@ -83,12 +83,12 @@ function Purchase() {
     }
 
     setData(newData);
-    calculateTotal(newData); // Update total whenever a field is changed
+    calculateTotal(newData); 
   };
 
   const calculateTotal = (newData) => {
     let sum = newData.reduce((acc, ini) => acc + Number(ini.total), 0);
-    setTotal(sum.toFixed(2)); // Update total with formatted value
+    setTotal(sum.toFixed(2));
   };
 
   const handleSubmit = async (e) => {
@@ -117,9 +117,9 @@ function Purchase() {
       console.log("Order submitted", response.data);
       toast.success("Order submitted successfully!");
 
-      // Reset all fields after successful submission
-      setData([{ _id: "", quantityInStock: "0", description: "", cost: "" }]);
-      setProductList([]);
+     
+      setData([{ _id: "", quantityInStock: "0", description: "", cost: "" ,newQuantity: "",total: "", gst: ""}]);
+     
       setDate("");
       setVendorName("");
       setTotal(0);
@@ -135,9 +135,9 @@ function Purchase() {
   }, []);
 
   return (
-    <div className="w-screen h-screen flex justify-center bg-white p-4">
+    <div className="w-screen h-screen flex justify-center bg-gray-50 p-4">
       <div className="w-[100%]">
-        <h1 className="text-2xl font-bold mb-6 flex items-center">
+        <h1 className="text-2xl bg-gray-100 p-3   flex items-center mb-10">
           <svg
             className="w-6 h-6 mr-2"
             fill="none"
@@ -153,21 +153,23 @@ function Purchase() {
             />
           </svg>
           New Purchase Order
+          
         </h1>
+        
 
         <form
           className="w-full relative flex flex-col gap-3 flex-1"
           onSubmit={handleSubmit}
         >
           <div>
-            <label className="block mb-2 text-red-500">Select Vendor*</label>
+            <label className="block mb-2 text-red-500 text-sm"> Vendor name*</label>
             <select
-              className="w-[30%] text-center text-gray-600 py-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
+              className="w-[30%] text-center text-gray-600 py-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500   text-sm"
               onChange={(e) => setVendorName(e.target.value)}
               value={supplier}
               required
             >
-              <option value="">-- Choose Vendor --</option>
+              <option value=" text-sm" >-- Select Vendor --</option>
               {vendorList.map((item, key) => (
                 <option key={key} value={item.name}>
                   {item.name} - {item.companyName.toUpperCase()}
@@ -178,10 +180,10 @@ function Purchase() {
 
           {/* Date Selection */}
           <div>
-            <label className="block mb-2 text-red-500">Date*</label>
+            <label className="block mb-2 text-red-500  text-sm">Date*</label>
             <input
               type="date"
-              className="w-[30%] text-center text-gray-600 py-[1px] border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
+              className="w-[30%] text-center text-gray-600 py-[1px] border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500  text-sm"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
@@ -191,15 +193,15 @@ function Purchase() {
           {/* Items Table */}
           <div className="w-full">
             <p className="font-semibold mb-2">Add Items</p>
-            <div className="h-[80%] border border-gray-200 rounded-lg p-2">
+            <div className="h-[80%] border border-gray-100 rounded-t-full ">
               <table className="table-auto w-full text-left mb-4 text-xs rounded-t-xl">
-                <thead>
+                <thead className="bg-gray-100 border rounded-t-3xl">
                   <tr>
-                    <th className="px-4 py-2">Items</th>
-                    <th className="px-4 py-2">New Quantity</th>
-                    <th className="px-4 py-2">Cost</th>
-                    <th className="px-4 py-2">GST</th>
-                    <th className="px-4 py-2">Amount</th>
+                    <th className="px-4 ">Items</th>
+                    <th className="px-4 ">New Quantity</th>
+                    <th className="px-4">Cost</th>
+                    <th className="px-4 ">GST</th>
+                    <th className="px-4 ">Amount</th>
                     <th className="px-4 py-2">Action</th>
                   </tr>
                 </thead>
@@ -271,7 +273,7 @@ function Purchase() {
                           onClick={() => removeRow(key)}
                           className="text-red-600 font-semibold hover:underline"
                         >
-                          Remove
+                          x
                         </button>
                       </td>
                     </tr>
@@ -281,20 +283,26 @@ function Purchase() {
               <button
                 type="button"
                 onClick={addRow}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-600 px-4 py-2 rounded-lg"
+                className="bg-blue-50 hover:bg-gray-300 text-gray-300 px-3 py-1 rounded-sm flex gap-3 text-sm"
               >
-                + Add Row
+                 <p  className="bg-blue-600 rounded-full w-5 h-5">+</p>
+                 <p className="text-black">Add  Row</p>
+
               </button>
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-4">
-            <p className="text-xl font-semibold">
-              Total: <span className="text-green-500">Rs :- {total}</span>
-            </p>
+          <div className="flex justify-between items-center mt-4 ">
+            <div className="flex gap-5 bg-gray-100 p-4">
+            <p>Total:</p> 
+            <span className="">Rs  {total}</span>
+            </div>
+            
+              
+          
             <button
               type="submit"
-              className="px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-600"
+              className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
             >
               Submit
             </button>

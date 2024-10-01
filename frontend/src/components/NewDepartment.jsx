@@ -43,7 +43,7 @@ function NewDepartment({ setVisible }) {
               Department Name:
             </label>
             <input
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
               type="text"
               placeholder="Enter department name"
               value={newDept.dName}

@@ -298,7 +298,7 @@ export const purchaseOrder = async (req, res) => {
         cost,
       });
 
-      totalAmount += Number(cost) * Number(newQuantity); 
+      totalAmount += Number(cost) * Number(newQuantity);
       await product.save();
     }
 
@@ -364,28 +364,27 @@ export const getDepartmentsList = async (req, res) => {
       {
         $unwind: {
           path: "$transactions",
-        }
+        },
       },
       {
         $replaceRoot: {
-          newRoot: "$transactions"
-        }
+          newRoot: "$transactions",
+        },
       },
       {
         $match: {
-          type:'outgoing'
-        }
-        
+          type: "outgoing",
+        },
       },
       {
         $project: {
-          purpose:1,
-          _id:0
-        }
-      }
-    ])
-    
-    res.status(200).json({ departmentList, datas,purpose });
+          purpose: 1,
+          _id: 0,
+        },
+      },
+    ]);
+
+    res.status(200).json({ departmentList, datas, purpose });
   } catch (error) {
     console.error(error.message);
     res.status(500).json(error.message);
@@ -412,7 +411,7 @@ export const newOutgoing = async (req, res) => {
         newQuantity: transaction.quantity,
         customer: dName,
         transactionId: departmentDetail._id,
-        purpose:purpose
+        purpose: purpose,
       };
 
       console.log(trans);
@@ -503,93 +502,191 @@ export const ItemTransction = async (req, res) => {
       },
       {
         $sort: {
-          date: -1
-        }
-      }
+          date: -1,
+        },
+      },
     ]);
+    console.log("yes enteres");
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
-export const getdata = async(req,res)=>{
-  try{
-    const id = req.query.id
+export const getdata = async (req, res) => {
+  try {
+    const id = req.query.id;
 
     const response = await Product.aggregate([
       {
         $match: {
-          _id: new ObjectId(id)
-        }
+          _id: new ObjectId(id),
+        },
       },
       {
         $unwind: {
-          path: '$transactions'
-        }
+          path: "$transactions",
+        },
       },
       {
         $replaceRoot: {
-        newRoot: {
-          $mergeObjects: [
-            "$transactions",
-            { unit: "$units",
-            name:'$name'}
-          ]
-        }
-        }
-    }
-    ])
-    console.table(response)
+          newRoot: {
+            $mergeObjects: ["$transactions", { unit: "$units", name: "$name" }],
+          },
+        },
+      },
+    ]);
+    console.table(response);
     res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
   }
-  catch(error){
+};
 
-    console.log(error.message)
-    
-  }
-}
-
-export const departmentList = async(req,res)=>{
-  try{
-    const {query} = req.query
-    console.log(query)
+export const departmentList = async (req, res) => {
+  try {
+    const { query } = req.query;
+    console.log(query);
 
     const response = await Departments.aggregate([
       {
         $match: {
-          $or:[
+          $or: [
             {
-              dName:{
-                $exists:true
-              }
+              dName: {
+                $exists: true,
+              },
             },
             {
-              $expr:{
-                $eq:["$dName",'']
-              }
-            }
-          ]
+              $expr: {
+                $eq: ["$dName", ""],
+              },
+            },
+          ],
+        },
+      },
+      {
+        $match: {
+          dName: {
+            $regex: `${query}`,
+            $options: "i",
+          },
+        },
+      },
+      {
+        $project: {
+          dName: 1,
+          contact: 1,
+        },
+      },
+    ]);
+    console.table(response);
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const getHistory = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const response = await Departments.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(`${id}`),
+        },
+      },
+      {
+        $unwind: {
+          path: "$purchaseRecords",
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$purchaseRecords",
+        },
+      },
+    ]);
+    console.table(response);
+    res.status(200).json(response)
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const purchaseHistory = async(req,res)=>{
+  try{
+
+    const response = await Vendor.aggregate([
+      {
+        $unwind: {
+          path: "$purchaseHistory",
         }
         
       },
       {
-        $match: {
-          dName:{
-            $regex:`${query}`,
-            $options:'i'
+        $replaceRoot: {
+          newRoot:{
+            $mergeObjects:[
+              '$purchaseHistory',
+              {name:'$name',
+              }
+            ]
           }
         }
       },
       {
         $project: {
-          dName:1,
-          contact:1
+          "items":0
+        }
+      },
+      {
+        $sort: {
+          date:-1
         }
       }
     ])
-    console.table(response)
+    res.status(200).json(response)
+
+  }
+  catch(error){
+    console.log(error.message)
+  }
+}
+
+export const specificHistory = async(req,res)=>{
+  try{
+    const {id} =  req.query
+    console.log(id)
+    const response = await Vendor.aggregate([
+      {
+        $unwind: {
+          path: "$purchaseHistory"
+        }
+      },
+      {
+        $match: {
+          "purchaseHistory._id": new ObjectId(
+            `${id}`
+          )
+        }
+      },
+      {
+        $unwind: {
+          path: "$purchaseHistory"
+        }
+      },
+      {
+        $replaceRoot: {
+          newRoot: {
+            $mergeObjects: [
+              "$purchaseHistory",
+              { name: "$name" }
+            ]
+          }
+        }
+      }
+    ])
     res.status(200).json(response)
 
   }

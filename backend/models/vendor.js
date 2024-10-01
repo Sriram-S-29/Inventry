@@ -28,7 +28,7 @@ const purchaseHistorySchema = mongoose.Schema({
         required: true,
         min: 0,
     },
-}, { _id: false });
+});
 
 
 const vendorSchema = mongoose.Schema({

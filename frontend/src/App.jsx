@@ -10,6 +10,8 @@ import Purchase from "./pages/Purchase";
 import Departments from "./pages/Departments";
 import Outgoing from "./pages/Outgoing";
 
+import PurchaseHistory from "./pages/PurchaseHistory";
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -36,6 +38,7 @@ function App() {
           <Route path="/newPurchase" element={isAuthenticated ? <Purchase /> : <Navigate to="/" />} />
           <Route path="/departments" element={isAuthenticated ? <Departments/> : <Navigate to="/" />} />
           <Route path="/outgoing" element={isAuthenticated ? <Outgoing/> : <Navigate to="/" />} />
+          <Route path="/purchaseHistory" element={isAuthenticated ? <PurchaseHistory/> : <Navigate to="/" />} />
         </Routes>
       </div>
     </BrowserRouter>
