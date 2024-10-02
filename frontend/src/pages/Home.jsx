@@ -1,24 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+
+
 import "react-loading-skeleton/dist/skeleton.css";
+import Notification from "../components/Notification";
 
 function Home() {
-  const inputbox = useRef();
-  const c = () => {
-    inputbox.current.focus();
-    console.log(inputbox.current.value);
-
-
-  };
+ 
 
 
   return (
-    <div className="w-screen  h-screen">
-      <div>
-        <input ref={inputbox}></input>
-        <button onClick={c}>Click</button>
-        <Skeleton circle={10} />
+    <div className="w-screen  h-screen flex flex-col ">
+      <div className="w-full bg-slate-300 flex justify-between">
+        <input></input>
+        <Notification/>
+
       </div>
+      <div>
+        remaing
+      </div>
+     
     </div>
   );
 }

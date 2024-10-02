@@ -27,10 +27,10 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={isAuthenticated ? <Navigate to="/home" /> : <Login setIsAuthenticated={setIsAuthenticated} />}
+            element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login setIsAuthenticated={setIsAuthenticated} />}
           />
           <Route
-            path="/home"
+            path="/dashboard"
             element={isAuthenticated ? <Home /> : <Navigate to="/" />}
           />
           <Route path="/vendors" element={isAuthenticated ? <Vendors /> : <Navigate to="/" />} />

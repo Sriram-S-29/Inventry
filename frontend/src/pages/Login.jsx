@@ -33,7 +33,7 @@ export default function Login({ setIsAuthenticated }) {
           localStorage.setItem("authToken", token);
           console.log("Redirected");
           setIsAuthenticated(true);
-          navigate("/home");
+          navigate("/dashboard");
         } else {
           setError(true);
         }
